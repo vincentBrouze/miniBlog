@@ -1,0 +1,10 @@
+
+
+
+/* Au chargement de la page*/
+function init() {
+    $('#ajoutHobby').click(envoieHobby);
+    $('#ajoutGroupe').click(envoieGroupe);
+}
+
+window.onload = init;
