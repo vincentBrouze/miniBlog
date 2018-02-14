@@ -38,6 +38,10 @@ function getCategories($connexion) {
   return mysqli_query($connexion, $req);
 }
 
+/* Retourne un ID d'auteur trouvé ou créé
+   ou false +msg si échec.
+   -Refaire les ifs-then-else en bordel
+*/
 function getCreeAuteur($connexion, $nom, $mail) {
   $req = "SELECT id, nom, email FROM Auteur WHERE email='$mail'";
 
@@ -45,7 +49,6 @@ function getCreeAuteur($connexion, $nom, $mail) {
   if ($res) {
     if (mysqli_num_rows($res) > 0) {
       $ligne = mysqli_fetch_assoc($res);
-      echo "Id existante : ".$ligne['id'];
       return $ligne['id'];
     } else {
       $nom = mysqli_real_escape_string($connexion, $nom);
@@ -53,27 +56,35 @@ function getCreeAuteur($connexion, $nom, $mail) {
       $req = "INSERT INTO Auteur (nom, email) VALUES ('$nom', '$mail')";
       $res = mysqli_query($connexion, $req);
       if ($res) return mysqli_insert_id($connexion);
-      else die("Erreur de requete $req" . mysqli_error($connexion));
+      else {
+	//echo "Erreur de requete $req" . mysqli_error($connexion);
+	return false;
+      }
     }
   } else {
-    die("Erreur de requete $req" . mysqli_error($connexion));
+    //echo "Erreur de requete $req" . mysqli_error($connexion);
+    return false; 
   }
-  
-  
 }
 
+/* Insere un article dans la base */
 function insereArticle($connexion, $idCateg, $titre, $desc, $logo, $contenu, $idA) {
   $contenu = mysqli_real_escape_string($connexion, $contenu);
   $titre = mysqli_real_escape_string($connexion, $titre);
   $desc = mysqli_real_escape_string($connexion, $desc);
   $logo = mysqli_real_escape_string($connexion, $logo);
 
-  $req = "INSERT INTO Article (titre, description, logo, contenu, idCategorie, idAuteur) VALUES ('$titre', '$desc', '$logo', '$contenu', '$idCateg', '$idA')";
-
+  if ($desc != '')
+    $req = "INSERT INTO Article (titre, description, logo, contenu, idCategorie, idAuteur) VALUES ('$titre', '$desc', '$logo', '$contenu', '$idCateg', '$idA')";
+  else 
+    $req = "INSERT INTO Article (titre, description, contenu, idCategorie, idAuteur) VALUES ('$titre', '$desc', '$contenu', '$idCateg', '$idA')";
+  
    $res = mysqli_query($connexion, $req);
    if (!$res) {
-     die("Erreur de requete $req" . mysqli_error($connexion));
+     //echo "Erreur de requete $req" . mysqli_error($connexion);
+     return false; 			      
    }
+   return true;
 }
 
 function getArticle($connexion, $id) {

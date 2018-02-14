@@ -19,10 +19,29 @@ function afficheHeader() {
   <body>
   <header><h1>Blog</h1><h2>Articles sur le web</h2></header>
 <div id="placeMenu"></div>
-   <main></main>';
+   <main></main>
+
+<div id="dialogue" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 id="titreDialogue" class="modal-title">Modal Header</h4>
+      </div>
+      <div id="contDialogue" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div></body></html>';
 }
 
-/* La partie header jusqu'au main*/
+/* La liste des articles */
 function afficheListeArticles($res) {
 
   while ($ligne = mysqli_fetch_assoc($res)) {
@@ -56,14 +75,14 @@ function afficheNav($connexion, $action, $currCateg = -1) {
       </button></div>';
   echo "<div id='menuDeroule'>";
   echo '<ul class="nav navbar-nav  mr-auto">';
-  if ($currCateg == -1) echo '<li class="active"><a href="#">Tout</a></li>';
+  if ($currCateg == -1) echo '<li class="active"><a data-id="-1" href="index.php">Tout</a></li>';
   else echo '<li><a href="index.php">Tout</a></li>';
   afficheCategories($connexion, $currCateg);
   echo '</ul>';
-  echo '<button class="btn btn-danger navbar-btn navbar-right">Écrire</button>';
-  echo '<form class="navbar-form navbar-right" action="/action_page.php">
+  echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
+  echo '<form class="navbar-form navbar-right" action="recherche.php">
 <div class="input-group">
-    <input type="text" class="form-control" placeholder="Rechercher">
+    <input required type="text" class="form-control" placeholder="Rechercher">
     <div class="input-group-btn">
       <button class="btn btn-default" type="submit">
         <i class="glyphicon glyphicon-search"></i>
@@ -86,8 +105,8 @@ function afficheFormCategories($connexion) {
   echo "</select>";
 }
 
+/* Formulaire de création */
 function afficheFormNouv($connexion) {
-  /* Formulaire de création */
   echo "<form enctype='multipart/form-data' id='formNouv' method='post' action='add.php'>";
   echo "<fieldset><legend>Article</legend>";  
   afficheFormCategories($connexion);
@@ -101,7 +120,7 @@ function afficheFormNouv($connexion) {
   echo "<label for='nomA'>Nom* :</label><input required id='nomA' name='nomA' type='text'/>";  
   echo "<label for='email'>Email* :</label><input required id='email' name='email' type='text'/>";  
   echo "</fieldset>";
-  echo "<button>Valider</button>";
+  echo "<button type='submit'>Valider</button>";
   echo "</form>";
   
 }

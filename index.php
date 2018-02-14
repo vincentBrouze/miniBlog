@@ -7,8 +7,6 @@ require('vues.php');
 $connexion = connecte_db();
 afficheHeader();
 die('');
-
-
 /* Le menu, en fonction de l'action*/
 afficheNav($connexion, $action, $currCateg);
 
