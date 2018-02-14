@@ -79,7 +79,8 @@ function afficheNav($connexion, $action, $currCateg = -1) {
   else echo '<li><a href="index.php">Tout</a></li>';
   afficheCategories($connexion, $currCateg);
   echo '</ul>';
-  echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
+  //echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
+  echo "<a title='login' id='add' href='login.php' class='btn btn-danger navbar-btn navbar-right'><i class='glyphicon glyphicon-log-in'></i></a>";
   echo '<form id="formCherche" class="navbar-form navbar-right" action="recherche.php">
 <div class="input-group">
     <input id="inputCherche" required type="text" class="form-control" placeholder="Rechercher">
