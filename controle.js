@@ -1,4 +1,4 @@
-
+/* Affichage d'un article */
 function cliqueArticle(evt) {
     var id = evt.target.dataset.id;
     var param = "action=affArticle&id="+id;
@@ -7,12 +7,9 @@ function cliqueArticle(evt) {
     return false;
 }
 
-function cliqueCategorie(evt) {
-    var id = evt.target.dataset.id;
-    var param = "action=listCateg&id="+id;
-    var lien;
-    $("main").load("action.php", param, cbArticles);
-    
+/* Mise à jour de l'etat des boutons de la navbar*/
+function majBoutonsNav(id) {
+    var lien, lienCateg;
     var elems = $("#menuDeroule .nav li");
     elems.each(function () {
 	lien = $(this).find("a");
@@ -24,6 +21,14 @@ function cliqueCategorie(evt) {
 	}
     }
     );
+}
+
+/* Clic sur une catégorie */
+function cliqueCategorie(evt) {
+    var id = evt.target.dataset.id;
+    var param = "action=listCateg&id="+id;
+    $("main").load("action.php", param, cbArticles);
+    majBoutonsNav(id);
 
     return false;    
 }
@@ -46,11 +51,14 @@ function resForm(data) {
     }
     $('#dialogue').modal();
 
+    /* Recharge la liste des articles */
     var param = "action=listeArticles";
     $("main").load("action.php", param, cbArticles);
-    
+    /* Remet le bouton du nav sur 'Tout'*/
+    majBoutonsNav(-1);
 }
 
+/* Creation d'article */
 function envoieForm(evt) {
     var formData = new FormData(evt.target);
     formData.append("action", "traiteForm");
@@ -67,7 +75,7 @@ function envoieForm(evt) {
     return false;
 }
 
-/* */
+/* cb sur le form d'ajout */
 function cbForm(evt) {
     $("#formNouv").submit(envoieForm);
 }
@@ -85,10 +93,23 @@ function cbArticles(evt) {
     $(".article a").click(cliqueArticle);
 }
 
+/* Envoie une recherche */
+function subRecherche(evt) {
+    var chaineRech = $("#inputCherche").val();
+    var param = "action=cherche&string="+chaineRech;
+    
+    $("main").load("action.php", param, cbArticles);
+    
+    /* Empeche l'envoi normal du formulaire */
+    evt.preventDefault();
+    return false;
+}
+
 /* Fixe les callback sur les éléments de menu */
 function cbCateg() {
     $("#menuDeroule .nav a").click(cliqueCategorie);
     $("#add").click(cliqueAdd);
+    $("#formCherche").submit(subRecherche);
 }
 
 
@@ -101,7 +122,6 @@ function init() {
     var param = "action=menu";
     $("#placeMenu").load("action.php", param, cbCateg);
 
-    
 }
 
 window.onload = init;

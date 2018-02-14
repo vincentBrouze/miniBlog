@@ -32,6 +32,19 @@ function getListeArticles($connexion, $categ = -1) {
   return $res;
 }
 
+/* Renvoie un pointeur mysqli vers les articles ou $crit apparait dans :
+- le titre ou 
+- la description ou
+- le nom de l'auteur.
+*/
+function getChercheArticles($connexion, $crit) {
+  $chaine = mysqli_real_escape_string($connexion, $crit);
+  $req = "SELECT Article.id as id, Article.titre as titre, Article.description as description, DATE_FORMAT(Article.dateCreation, '%d %M %Y') as dateC, Article.logo as logo, Auteur.nom as nomA, Categorie.nom as nomC FROM Article INNER JOIN Auteur on Article.idAuteur = Auteur.id INNER JOIN Categorie on Article.idCategorie = Categorie.id WHERE Article.titre LIKE '%$chaine%' OR Article.description LIKE '%$chaine%' OR Auteur.nom LIKE '%$chaine%' ORDER BY Article.dateCreation DESC";
+
+  $res = mysqli_query($connexion, $req);
+  return $res;
+}
+
 function getCategories($connexion) {
   $req = "SELECT id, nom FROM Categorie ORDER BY nom ASC";
     

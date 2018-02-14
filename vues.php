@@ -80,9 +80,9 @@ function afficheNav($connexion, $action, $currCateg = -1) {
   afficheCategories($connexion, $currCateg);
   echo '</ul>';
   echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
-  echo '<form class="navbar-form navbar-right" action="recherche.php">
+  echo '<form id="formCherche" class="navbar-form navbar-right" action="recherche.php">
 <div class="input-group">
-    <input required type="text" class="form-control" placeholder="Rechercher">
+    <input id="inputCherche" required type="text" class="form-control" placeholder="Rechercher">
     <div class="input-group-btn">
       <button class="btn btn-default" type="submit">
         <i class="glyphicon glyphicon-search"></i>

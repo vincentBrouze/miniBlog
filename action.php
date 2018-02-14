@@ -19,6 +19,9 @@ if ($action == "listeArticles") {
   afficheListeArticles($res);
 } else if ($action == 'add') {
   afficheFormNouv($connexion);
+} else if ($action == "cherche") {
+  $res = getChercheArticles($connexion, $critere);
+  afficheListeArticles($res);
 } else if ($action == 'traiteForm') {
   $idAuteur = getCreeAuteur($connexion, $nomA, $email);
   if ($idAuteur === false) {

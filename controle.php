@@ -30,7 +30,12 @@ if (isset($_POST['action'])) {
       if (isset($_GET['id'])) {
 	$currCateg = $_GET['id'];
       } else $action = "listeArticles";
-    }     
+    }
+    if ($action =="cherche") {
+      if (isset($_GET['string'])) {
+	$critere = $_GET['string'];
+      } else $action = "listeArticles";
+    }
   }
 }
 ?>
