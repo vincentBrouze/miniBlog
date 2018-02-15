@@ -1,19 +1,18 @@
 <?php
 
+session_start();
+
 $action="listeArticles";
 $currCateg = -1;
 
-if (isset($_POST['action'])) {
+if (isset($_POST['action']) && isset($_SESSION['login'])) {
   $action = $_POST['action'];
   if (isset($_POST['categorie']) && isset($_POST['titre']) &&
-    isset($_POST['description']) && isset($_POST['article']) &&
-    isset($_POST['nomA']) && isset($_POST['email'])) {
+    isset($_POST['description']) && isset($_POST['article'])) {
     $categorie = $_POST['categorie'];
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $article = $_POST['article'];
-    $nomA = $_POST['nomA'];
-    $email = $_POST['email'];
   } else {
     die('Erreur de formulaire');
   }
@@ -35,6 +34,19 @@ if (isset($_POST['action'])) {
       if (isset($_GET['string'])) {
 	$critere = $_GET['string'];
       } else $action = "listeArticles";
+    }
+    if ($action =="login") {
+      if (isset($_GET['login']) && isset($_GET['mdp'])) {
+	$login = $_GET['login'];
+	$mdp = $_GET['mdp'];
+      } else $action = "listeArticles";
+    }
+    if ($action == 'add') {
+      /*
+      if (!isset($_SESSION['login'])) {
+	$action = "listeArticles";
+      }
+      */
     }
   }
 }

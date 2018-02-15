@@ -11,16 +11,16 @@ die('');
 afficheNav($connexion, $action, $currCateg);
 
 if ($action == "listeArticles") {
-/* Liste des articles */
-$res = getListeArticles($connexion);
-afficheListeArticles($res);
+  /* Liste des articles */
+  $res = getListeArticles($connexion);
+  afficheListeArticles($res);
 } else if ($action == "ecrire") {
-afficheFormNouv($connexion);
+  afficheFormNouv($connexion);
 } else if ($action =="affArticle") {
-afficheArticle($connexion, $id);
+  afficheArticle($connexion, $id);
 } else if ($action == "listCateg") {
-$res = getListeArticles($connexion, $currCateg);
-afficheListeArticles($res);
+  $res = getListeArticles($connexion, $currCateg);
+  afficheListeArticles($res);
 }
 
 ?>

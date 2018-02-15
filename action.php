@@ -22,17 +22,27 @@ if ($action == "listeArticles") {
 } else if ($action == "cherche") {
   $res = getChercheArticles($connexion, $critere);
   afficheListeArticles($res);
+} else if ($action == 'logout') {
+  unset($_SESSION['login']);
+  unset($_SESSION['id']);
+  echo true;
 } else if ($action == 'traiteForm') {
-  $idAuteur = getCreeAuteur($connexion, $nomA, $email);
+  if (isset($_SESSION['id']))
+    $idAuteur = $_SESSION['id'];
+  else {
+    echo json_encode(array(false, 
+			   "Session expirée, veuillez vous reconnecter."));
+    die('');
+  }
+  //$idAuteur = getCreeAuteur($connexion, $nomA, $email);
   if ($idAuteur === false) {
-    echo json_encode(array(false, "Impossible de creer un auteur."));
+    echo json_encode(array(false, "Impossible d'authentifier l'auteur."));
   }
   if (isset($_FILES['logo']['name']) && $_FILES['logo']['name'] != '') {
     $dest = 'logos/'.basename($_FILES['logo']['name']);
     if (!move_uploaded_file($_FILES['logo']['tmp_name'], $dest)) {
       echo json_encode(array(false, "Probleme d'upload de fichier."));
       die();
-      //die('Erreur dupload de '.$_FILES['logo']['tmp_name']." vers $dest");
     }
   } else $dest = '';
   /* insere l'article */
@@ -40,7 +50,14 @@ if ($action == "listeArticles") {
   if ($res === false) {
     echo json_encode(array(false, "Probleme d'insertion d'article"));    
   } else echo json_encode(array(true, ''));
-  
+  /* Fin traiteForm*/
+} else if ($action == 'login') {
+  $auth = authenticate($connexion, $login, $mdp);
+  if ($auth > 0) {
+    $_SESSION['login'] = $login;
+    $_SESSION['id'] = $auth;
+    echo json_encode(true);
+  } else echo json_encode(false);
 }
 
 ?>

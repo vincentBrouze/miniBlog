@@ -21,9 +21,9 @@ function afficheHeader() {
 <div id="placeMenu"></div>
    <main></main>
 
+<!-- Modal de dialogue pour lajout d article-->
 <div id="dialogue" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -36,9 +36,44 @@ function afficheHeader() {
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
-</div></body></html>';
+</div>
+
+
+<!-- Modal de login -->
+<div id="login" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Login</h4>
+      </div>
+      <div id="contDialogue" class="modal-body">
+<form id="formLogin" action="login.php" method="get">
+ <div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control-plaintext" id="champsLogin" placeholder="Login">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="champsPassword" placeholder="Password">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Valider</button>
+</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>';
 }
 
 /* La liste des articles */
@@ -79,8 +114,13 @@ function afficheNav($connexion, $action, $currCateg = -1) {
   else echo '<li><a href="index.php">Tout</a></li>';
   afficheCategories($connexion, $currCateg);
   echo '</ul>';
-  //echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
-  echo "<a title='login' id='add' href='login.php' class='btn btn-danger navbar-btn navbar-right'><i class='glyphicon glyphicon-log-in'></i></a>";
+  /* En fct de la session */
+  if (isset($_SESSION['login'])) {
+    echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
+    echo "<a title='logout' id='boutLogout' href='logout.php' class='btn btn-danger navbar-btn navbar-right'><i class='glyphicon glyphicon-log-out'></i></a>";
+  } else {
+    echo "<a title='login' id='boutLogin' href='login.php' class='btn btn-danger navbar-btn navbar-right' data-toggle='modal' data-target='#login'><i class='glyphicon glyphicon-log-in'></i></a>";
+  }
   echo '<form id="formCherche" class="navbar-form navbar-right" action="recherche.php">
 <div class="input-group">
     <input id="inputCherche" required type="text" class="form-control" placeholder="Rechercher">
@@ -117,10 +157,12 @@ function afficheFormNouv($connexion) {
   echo "<label for='article'>Article* :</label><textarea id='article' name='article' rows='20'></textarea>";
 
   echo "</fieldset>";
+  /*
   echo "<fieldset><legend>Auteur</legend>";
   echo "<label for='nomA'>Nom* :</label><input required id='nomA' name='nomA' type='text'/>";  
   echo "<label for='email'>Email* :</label><input required id='email' name='email' type='text'/>";  
   echo "</fieldset>";
+  */
   echo "<button type='submit'>Valider</button>";
   echo "</form>";
   

@@ -7,6 +7,16 @@ function cliqueArticle(evt) {
     return false;
 }
 
+function cliqueLogout(evt) {
+    var param = "action=logout";
+    $.get("action.php", param);
+
+    var param = "action=menu";
+    $("#placeMenu").load("action.php", param, cbCateg);
+    
+    return false;  
+}
+
 /* Mise à jour de l'etat des boutons de la navbar*/
 function majBoutonsNav(id) {
     var lien, lienCateg;
@@ -35,7 +45,7 @@ function cliqueCategorie(evt) {
 
 /* Apres validation du form*/
 function resForm(data) {
-    console.log(data);
+    //console.log(data);
     var res = JSON.parse(data);
 
     var statut = res[0];
@@ -110,8 +120,30 @@ function cbCateg() {
     $("#menuDeroule .nav a").click(cliqueCategorie);
     $("#add").click(cliqueAdd);
     $("#formCherche").submit(subRecherche);
+    var boutLogout = $("#boutLogout");
+    boutLogout.click(cliqueLogout);
 }
 
+/* Le submit du formulaire */
+function subLogin(evt) {
+    var log = $("#champsLogin").val();
+    var mdp = $("#champsPassword").val();
+
+    var param = "action=login&login="+log+"&mdp="+mdp;
+
+    $.get("action.php", param, function (data) {
+	if (JSON.parse(data)) {
+	    var param = "action=menu";
+	    $("#placeMenu").load("action.php", param, cbCateg);
+	    $("#login").modal('hide');
+	} else {
+	    alert('erreur');
+	}
+    });
+    
+    evt.preventDefault();
+    return false;
+}
 
 /* Au chargement de la page*/
 function init() {
@@ -122,6 +154,8 @@ function init() {
     var param = "action=menu";
     $("#placeMenu").load("action.php", param, cbCateg);
 
+    /* CB sur le form de login */
+    $("#formLogin").submit(subLogin);
 }
 
 window.onload = init;

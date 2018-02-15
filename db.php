@@ -110,5 +110,23 @@ function getArticle($connexion, $id) {
   return mysqli_fetch_assoc($res);
 }
 
+/* retourne  l'id de l'user si l'authentification réussit
+   -1 sinon.
+*/
+function authenticate($connexion, $login, $mdp) {
+  $login = mysqli_real_escape_string($connexion, $login);
+  $mdpHache = sha1($mdp);
+
+  $req = "SELECT id, nom FROM Auteur WHERE login = '$login' AND mdp ='$mdpHache'";
+  $res = mysqli_query($connexion, $req);
+  if (!$res) {
+    die("Erreur d'authentification" . mysqli_error($connexion));
+  }
+  if (mysqli_num_rows($res) > 0) {
+    $row = mysqli_fetch_assoc($res);
+    $id = $row['id'];
+    return $id;
+  } else return -1;
+}
 
 ?>
