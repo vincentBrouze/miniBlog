@@ -57,7 +57,7 @@ if ($action == "listeArticles") {
     $_SESSION['login'] = $login;
     $_SESSION['id'] = $auth;
     echo json_encode(true);
-  } else echo json_encode(false);
+  } else echo json_encode(false, "Impossible d'ajouter un article");
 }
 
 ?>

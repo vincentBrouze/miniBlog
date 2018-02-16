@@ -1,4 +1,4 @@
-/* Affichage d'un article */
+/* Affichage complet d'un article */
 function cliqueArticle(evt) {
     var id = evt.target.dataset.id;
     var param = "action=affArticle&id="+id;
@@ -7,6 +7,9 @@ function cliqueArticle(evt) {
     return false;
 }
 
+/* Envoie une requete de logout sur clic 
+   du bouton.
+ */
 function cliqueLogout(evt) {
     var param = "action=logout";
     $.get("action.php", param);
@@ -57,7 +60,7 @@ function resForm(data) {
 	$("#contDialogue").html("Nouvel article créé avec succès");
     } else {
 	$("#titreDialogue").html("Échec");
-	$("#contDialogue").html(statut);
+	$("#contDialogue").html(msg);
     }
     $('#dialogue').modal();
 
@@ -71,7 +74,13 @@ function resForm(data) {
 /* Creation d'article */
 function envoieForm(evt) {
     var formData = new FormData(evt.target);
+    var code = $('#article').summernote('code');
+    
+    /* L'action pour controle.php */
     formData.append("action", "traiteForm");
+    /* Ajoute le code HTML de l'editeur */
+    formData.append("articleMEF", code);
+
     $.ajax({
 	type: "post",
 	url: "action.php", 
@@ -81,13 +90,24 @@ function envoieForm(evt) {
 	success: resForm});
     console.log(formData);
 
+    /* Empeche la soumission normale */
     evt.preventDefault();
     return false;
 }
 
 /* cb sur le form d'ajout */
 function cbForm(evt) {
+    /* Clic sur valider */
     $("#formNouv").submit(envoieForm);
+
+    /* Active l'éditeur */
+    $('#article').summernote({
+	height: 300,
+	minHeight: null,
+	maxHeight: null, 
+	focus: false
+    });
+
 }
 
 /* Clique sur le bouton add*/
@@ -156,6 +176,8 @@ function init() {
 
     /* CB sur le form de login */
     $("#formLogin").submit(subLogin);
+
 }
 
+/* Au chargement de la page*/
 window.onload = init;

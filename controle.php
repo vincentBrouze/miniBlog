@@ -5,7 +5,7 @@ session_start();
 $action="listeArticles";
 $currCateg = -1;
 
-if (isset($_POST['action']) && isset($_SESSION['login'])) {
+if (isset($_POST['action'])) {
   $action = $_POST['action'];
   if (isset($_POST['categorie']) && isset($_POST['titre']) &&
     isset($_POST['description']) && isset($_POST['article'])) {
@@ -13,6 +13,9 @@ if (isset($_POST['action']) && isset($_SESSION['login'])) {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $article = $_POST['article'];
+    if (isset($_POST['articleMEF'])) {
+      $article = $_POST['articleMEF'];
+    }
   } else {
     die('Erreur de formulaire');
   }

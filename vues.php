@@ -13,6 +13,12 @@ function afficheHeader() {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="style.css">
+
+<!-- include summernote css/js -->
+<link href="dist/summernote.css" rel="stylesheet">
+<script src="dist/summernote.js"></script>
+<script src="dist/lang/summernote-fr-FR.js"></script>
+
   <script src="controle.js"></script>
    <title>Mon blog</title>
   </head>
@@ -101,21 +107,24 @@ function afficheCategories($connexion, $curr) {
 
 /* La partie menu */
 function afficheNav($connexion, $action, $currCateg = -1) {
-  echo '<nav class="navbar navbar-default navbar-expand-lg" id="nav">';
+  echo '<nav class="navbar navbar-default navbar-collapse-xs" id="nav">';
   echo '<div class="container-fluid">'; 
   echo '<div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menuDeroule">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button></div>';
-  echo "<div id='menuDeroule'>";
+  echo "<div id='menuDeroule' class='navbar-collapse collapse'>";
   echo '<ul class="nav navbar-nav  mr-auto">';
-  if ($currCateg == -1) echo '<li class="active"><a data-id="-1" href="index.php">Tout</a></li>';
-  else echo '<li><a href="index.php">Tout</a></li>';
+  if ($currCateg == -1) 
+    echo '<li class="active"><a data-id="-1" href="index.php">Tout</a></li>';
+  else 
+    echo '<li><a href="index.php">Tout</a></li>';
   afficheCategories($connexion, $currCateg);
   echo '</ul>';
+
   /* En fct de la session */
-  if (isset($_SESSION['login'])) {
+  if (isset($_SESSION['id'])) {//Utilisateur connecté
     echo '<a id="add" href="add.php" class="btn btn-danger navbar-btn navbar-right">Écrire</a>';
     echo "<a title='logout' id='boutLogout' href='logout.php' class='btn btn-danger navbar-btn navbar-right'><i class='glyphicon glyphicon-log-out'></i></a>";
   } else {
