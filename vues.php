@@ -1,8 +1,7 @@
 <?php
 /* 
-   Génération du code HTML
+   Génération du code HTML.
 */
-
 
 /* La partie header jusqu'au main*/
 function afficheHeader() {
