@@ -121,6 +121,14 @@ function cliqueAdd(evt) {
 /* Fixe les cb sur les articles */
 function cbArticles(evt) {
     $(".article a").click(cliqueArticle);
+
+    /* Changement de page*/
+    $(".chgtPage").click(function (evt) {
+	var page = evt.target.dataset.pagination;
+	var param = "action=listeArticles&page="+page;
+	$("main").load("action.php", param, cbArticles);
+	return false;
+    });
 }
 
 /* Envoie une recherche */

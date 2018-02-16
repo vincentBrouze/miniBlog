@@ -3,6 +3,8 @@
 session_start();
 
 $action="listeArticles";
+$pageCour = 1;
+$intervalle = 10;
 $currCateg = -1;
 
 if (isset($_POST['action'])) {
@@ -23,6 +25,12 @@ if (isset($_POST['action'])) {
   if (isset($_GET['action'])) {
     $action = $_GET['action'];
     
+    if ($action == "listeArticles") {
+      if (isset($_GET['page'])) {
+	$pageCour = $_GET['page'];
+      } 
+    }
+   
     if ($action == "affArticle") {
       if (isset($_GET['id'])) {
 	$id = $_GET['id'];
@@ -31,6 +39,7 @@ if (isset($_POST['action'])) {
     if ($action == "listCateg") {
       if (isset($_GET['id'])) {
 	$currCateg = $_GET['id'];
+	if ($currCateg == -1) $action = "listeArticles";
       } else $action = "listeArticles";
     }
     if ($action =="cherche") {

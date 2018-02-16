@@ -8,20 +8,23 @@ $connexion = connecte_db();
 
 if ($action == "listeArticles") {
   /* Liste des articles */
-  $res = getListeArticles($connexion);
-  afficheListeArticles($res);
+  $deb = ($pageCour - 1)*$intervalle;
+  $nbp = getNbPages($connexion, $intervalle);
+  $res = getListeArticles($connexion, $deb);
+  afficheListeArticles($res, $pageCour, $nbp);
 } else if ($action == "menu") {
   afficheNav($connexion, "", -1);
 } else if ($action == "affArticle") {
   afficheArticle($connexion, $id);
 } else if ($action == "listCateg") {
-  $res = getListeArticles($connexion, $currCateg);
-  afficheListeArticles($res);
+  $nbp = getNbPages($connexion, $intervalle, $currCateg);
+  $res = getListeArticles($connexion, 1, 100, $currCateg);
+  afficheListeArticles($res, 1, 1);
 } else if ($action == 'add') {
   afficheFormNouv($connexion);
 } else if ($action == "cherche") {
   $res = getChercheArticles($connexion, $critere);
-  afficheListeArticles($res);
+  afficheListeArticles($res, 1, 1);
 } else if ($action == 'logout') {
   unset($_SESSION['login']);
   unset($_SESSION['id']);

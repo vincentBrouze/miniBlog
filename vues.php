@@ -83,15 +83,49 @@ function afficheHeader() {
 }
 
 /* La liste des articles */
-function afficheListeArticles($res) {
+function afficheListeArticles($res, $pageCour, $nbp) {
 
   while ($ligne = mysqli_fetch_assoc($res)) {
     echo '<article class="article">';
-    echo "<h2><img class='logo' src='".$ligne['logo']."'/><a data-id=".$ligne['id']." href='index.php?action=affArticle&id=".$ligne['id']."'>".$ligne['titre']."</a></h2>";
+    echo "<h2><img class='logo' src='".$ligne['logo']."'/><a data-id='".$ligne['id']."' href='index.php?action=affArticle&id=".$ligne['id']."'>".$ligne['titre']."</a></h2>";
     echo "<p class='nomDate'>Par ".$ligne['nomA'].", le ".$ligne['dateC']." -- ".$ligne['nomC']."</p>";
     echo "<p>".$ligne['description']."</p>";
     echo "</article>";
   }
+
+  /* Pagination */
+  $classe = "";
+  $data = $pageCour - 1;
+  if ($pageCour == 1) {
+    $classe = "disabled";
+    $data= 1;
+  }
+  echo '<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="'.$classe.'">
+      <a class="chgtPage" data-pagination="'.$data.'" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>';
+
+  for ($i = 1; $i <= $nbp; $i++) {
+    $classe = "";
+    if ($i == $pageCour) $classe = "active";
+      echo '<li class="'.$classe.'"><a class="chgtPage" data-pagination="'.$i.'" href="#">'.$i.'</a></li>';
+  }
+  $classe = "";
+  $data = $pageCour + 1; 
+  if ($nbp == $pageCour) {
+    $classe = "disabled";
+    $data= 1;
+  }
+  echo '
+      <li class="'.$classe.'"><a class="chgtPage" data-pagination="'.$data.'" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>';
 }
 
 function afficheCategories($connexion, $curr) {

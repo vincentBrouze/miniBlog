@@ -23,11 +23,11 @@ function connecte_db() {
   return $connexion;
 }
 
-function getListeArticles($connexion, $categ = -1) {
+function getListeArticles($connexion, $deb = 0, $interv = 10, $categ = -1) {
   if ($categ == -1)
-    $req = "SELECT Article.id as id, Article.titre as titre, Article.description as description, DATE_FORMAT(Article.dateCreation, '%d %M %Y') as dateC, Article.logo as logo, Auteur.nom as nomA, Categorie.nom as nomC FROM Article INNER JOIN Auteur on Article.idAuteur = Auteur.id INNER JOIN Categorie on Article.idCategorie = Categorie.id ORDER BY Article.dateCreation DESC";
+    $req = "SELECT Article.id as id, Article.titre as titre, Article.description as description, DATE_FORMAT(Article.dateCreation, '%d %M %Y') as dateC, Article.logo as logo, Auteur.nom as nomA, Categorie.nom as nomC FROM Article INNER JOIN Auteur on Article.idAuteur = Auteur.id INNER JOIN Categorie on Article.idCategorie = Categorie.id ORDER BY Article.dateCreation DESC LIMIT $deb, $interv";
   else 
-    $req = "SELECT Article.id as id, Article.titre as titre, Article.description as description, DATE_FORMAT(Article.dateCreation, '%d %M %Y') as dateC, Article.logo as logo, Auteur.nom as nomA, Categorie.nom as nomC FROM Article INNER JOIN Auteur on Article.idAuteur = Auteur.id INNER JOIN Categorie on Article.idCategorie = Categorie.id WHERE Categorie.id = '$categ' ORDER BY Article.dateCreation DESC";
+    $req = "SELECT Article.id as id, Article.titre as titre, Article.description as description, DATE_FORMAT(Article.dateCreation, '%d %M %Y') as dateC, Article.logo as logo, Auteur.nom as nomA, Categorie.nom as nomC FROM Article INNER JOIN Auteur on Article.idAuteur = Auteur.id INNER JOIN Categorie on Article.idCategorie = Categorie.id WHERE Categorie.id = '$categ' ORDER BY Article.dateCreation DESC LIMIT $deb, $interv";
   $res = mysqli_query($connexion, $req);
   return $res;
 }
@@ -128,5 +128,21 @@ function authenticate($connexion, $login, $mdp) {
     return $id;
   } else return -1;
 }
+
+function getNbPages($connexion, $interv, $categorie = -1) {
+  if ($categorie > 0) 
+    $req = "SELECT COUNT(*) as nb FROM Article WHERE idCategorie = $categorie";
+  else 
+    $req = "SELECT COUNT(*) as nb FROM Article";
+
+  $res = mysqli_query($connexion, $req);
+  if (!$res) {
+    die("Erreur d'authentification" . mysqli_error($connexion));
+  }
+  $row = mysqli_fetch_assoc($res);
+  $nbA = $row['nb'];
+  return ceil($nbA/$interv);
+}
+
 
 ?>
