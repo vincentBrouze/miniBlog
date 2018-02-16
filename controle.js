@@ -1,3 +1,7 @@
+/* Controle.js fonctions de controle en ajax
+* Réorganisation du code à faire; 
+*/
+
 /* Affichage complet d'un article */
 function cliqueArticle(evt) {
     var id = evt.target.dataset.id;

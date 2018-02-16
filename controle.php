@@ -7,6 +7,7 @@ $pageCour = 1;
 $intervalle = 10;
 $currCateg = -1;
 
+/* Analyse des parametres */
 if (isset($_POST['action'])) {
   $action = $_POST['action'];
   if (isset($_POST['categorie']) && isset($_POST['titre']) &&
